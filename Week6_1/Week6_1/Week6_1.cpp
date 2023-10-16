@@ -24,18 +24,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
-		//	창의 최소 및 최대 크기에 대한 정보 제어
-	case WM_GETMINMAXINFO:
-	{
-		// MINMAXINFO 구조체 포인터를 선언 후, lParam(창의 크기 제한 정보)에 저장된 값을 MINMAXINFO 구조체 포인터로 캐스팅한 값으로 초기화 
-		MINMAXINFO* minMaxInfo = (MINMAXINFO*)lParam;
-		//	MINMAXINFO 구조체 멤버들을 설정하여 창의 최소 크기와 최대 크기를 지정
-		minMaxInfo->ptMinTrackSize.x = 800; // 최소 너비
-		minMaxInfo->ptMinTrackSize.y = 600; // 최소 높이
-		minMaxInfo->ptMaxTrackSize.x = 800; // 최대 너비
-		minMaxInfo->ptMaxTrackSize.y = 600; // 최대 높이
-	}
-	break;
 	//	키보드의 키가 눌린경우
 	case WM_KEYDOWN:
 		//	왼쪽 방향키인 경우
@@ -146,7 +134,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	}
 
 	// Window viewport 영역 조정
-	RECT rect = { 0, 0, 800, 600 };
+	RECT rect = { 150, 100, 800, 600 };
 	AdjustWindowRect(&rect, WS_OVERLAPPEDWINDOW, 0);
 	int width = rect.right - rect.left;
 	int height = rect.bottom - rect.top;
