@@ -76,7 +76,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		FillRect(hdc, &rect, hBrush_eraser);
 
 		//	타겟 사각형과 사용자 사각형이 충돌한 경우
-		if (PtInRect(&rect_target, { rect_user.left,rect_user.top }) || PtInRect(&rect_target, { rect_user.right,rect_user.bottom })) {
+		if (PtInRect(&rect_target, { rect_user.left,rect_user.top }) || PtInRect(&rect_target, { rect_user.right,rect_user.bottom }) || PtInRect(&rect_target, { rect_user.right, rect_user.top }) || PtInRect(&rect_target, { rect_user.left, rect_user.bottom })){
 			//	충돌 메시지 출력
 			TextOut(hdc, 10, 10, text, lstrlen(text));
 		}
