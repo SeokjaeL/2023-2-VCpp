@@ -27,7 +27,7 @@ HWND hButton5;
 // 시작과 끝 좌표와 좌표값 백업, 마우스 이동 좌표, 거리값 좌표, 도형에 대한 좌표, 드로잉 영역에 대한 좌표
 POINT startPoint = { 0 };
 POINT endPoint = { 0 };
-POINT m_startPoint{ 0 };
+POINT m_startPoint = { 0 };
 POINT m_endPoint = { 0 };
 POINT distance = { 0 };
 POINT startPointSaved = { 0 };
