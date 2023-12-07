@@ -7,6 +7,6 @@ void DrawCircle(HDC hdc, RECT& Circle);
 
 void DrawBonobono(HWND hwnd, HDC hdc, int blink);
 
-void DrawRyan(HWND hwnd, HDC hdc, int left, int top, int right, int bottom);
+void DrawRyan(HWND hwnd, HDC hdc, POINT startPoint, POINT endPoint);
 
-
+void DrawCube(HWND hWnd, HDC hdc, POINT startPoint, POINT endPoint);

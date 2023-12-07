@@ -15,6 +15,7 @@ void SetMinMaxWindowSizes(HWND hWnd, MINMAXINFO* minMaxInfo, int minWidth, int m
 	minMaxInfo->ptMaxTrackSize.y = height; // 최대 높이
 }
 
+// 커서 변경
 void UpdateCursor(HWND hwnd, const RECT& drawing_area) {
 	// 커서의 위치를 가져옵니다.
 	POINT pt;

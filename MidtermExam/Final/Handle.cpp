@@ -1,21 +1,26 @@
 #include "Handle.h"
 #include "Common.h"
 
+// 마우스 이동 핸들러
 void HandleMouseMove(HWND hwnd, WPARAM wParam, LPARAM lParam, RECT& drawing_area, int& Shape, BOOL& isMouseLButtonPressed, BOOL& isMouseRButtonPressed, POINT& startPoint, POINT& endPoint, RECT& Box, RECT& Circle, POINT& m_startPoint, POINT& m_endPoint, POINT& startPointSaved, POINT& endPointSaved, POINT& distance) {
 	// 도형의 종류가 Circle이고 마우스 왼쪽 버튼이 눌린 경우
 	if (Shape == S_Circle && isMouseLButtonPressed) {
 		endPoint = { LOWORD(lParam), HIWORD(lParam) };
 
-		int radius = min(abs(startPoint.x - endPoint.x), abs(startPoint.y - endPoint.y)); // 반지름은 두 방향 중 작은 값으로 설정
+		// 반지름은 두 방향 중 작은 값으로 설정
+		int radius = min(abs(startPoint.x - endPoint.x), abs(startPoint.y - endPoint.y)); 
 
-		int centerX = (startPoint.x + endPoint.x) / 2; // 중심의 x 좌표
-		int centerY = (startPoint.y + endPoint.y) / 2; // 중심의 y 좌표
+		// 중심의 x 좌표와 y좌표 설정
+		int centerX = (startPoint.x + endPoint.x) / 2;
+		int centerY = (startPoint.y + endPoint.y) / 2;
 
+		// 원의 좌표값 계산
 		Circle.left = centerX - radius;
 		Circle.top = centerY - radius;
 		Circle.right = centerX + radius;
 		Circle.bottom = centerY + radius;
 
+		// 화면을 갱신하여 원을 그리기
 		InvalidateRect(hwnd, &drawing_area, TRUE);
 	}
 
@@ -56,13 +61,13 @@ void HandleMouseMove(HWND hwnd, WPARAM wParam, LPARAM lParam, RECT& drawing_area
 			// endPoint 업데이트
 			endPoint = currentPoint;
 
-			// 화면을 갱신하여 원을 그립니다.
+			// 화면을 갱신하여 원을 그리기
 			InvalidateRect(hwnd, &drawing_area, TRUE);
 		}
 	}
 
-	// 도형의 종류가 Box이고 마우스 왼쪽 버튼이 눌린 경우
-	if (Shape == S_Box && isMouseLButtonPressed) {
+	// 도형의 종류가 Box, Cube이고 마우스 왼쪽 버튼이 눌린 경우
+	if (Shape == S_Box && isMouseLButtonPressed || Shape == S_Cube && isMouseLButtonPressed) {
 		// 마우스를 움직였을때 좌표값을 LOWORD(lParam), HIWORD(lParam)함수를 통해 가져와서 사각형 끝점의 좌표값으로 설정
 		endPoint = { LOWORD(lParam), HIWORD(lParam) };
 
@@ -92,7 +97,7 @@ void HandleMouseMove(HWND hwnd, WPARAM wParam, LPARAM lParam, RECT& drawing_area
 		Box.right = endPointSaved.x + distance.x;
 		Box.bottom = endPointSaved.y + distance.y;
 
-		// 화면을 갱신하여 사각형을 그립니다.
+		// 화면을 갱신하여 사각형을 그리기
 		InvalidateRect(hwnd, &drawing_area, TRUE);
 	}
 
@@ -101,18 +106,19 @@ void HandleMouseMove(HWND hwnd, WPARAM wParam, LPARAM lParam, RECT& drawing_area
 		// 마우스를 움직였을때 좌표값을 LOWORD(lParam), HIWORD(lParam)함수를 통해 가져와서 사각형 끝점의 좌표값으로 설정
 		endPoint = { LOWORD(lParam), HIWORD(lParam) };
 
-		// 화면을 갱신하여 Ryan을 그립니다.
+		// 화면을 갱신하여 Ryan을 그리기
 		InvalidateRect(hwnd, &drawing_area, TRUE);
 	}
 }
 
+// 마우스 완쪽 버튼 눌림 핸들러
 void HandleLeftButtonDown(HWND hwnd, WPARAM wParam, LPARAM lParam, POINT& startPoint, POINT& endPoint, BOOL& isMouseLButtonPressed, int& Shape, const RECT& drawing_area) {
 	// 좌표값을 가져와서 시작 좌표값에 할당
 	startPoint = { LOWORD(lParam), HIWORD(lParam) };
 	endPoint = startPoint;
 
 	// 도형의 종류가 Circle, Box, Ryan인 경우에만 처리
-	if (Shape == S_Circle || Shape == S_Box || Shape == S_Ryan) {
+	if (Shape == S_Circle || Shape == S_Box || Shape == S_Ryan || Shape == S_Cube) {
 		// 시작점이 드로잉 영역 안에 있다면
 		if (PtInRect(&drawing_area, startPoint)) {
 			// 체크 변수의 값을 TRUE로 설정
@@ -121,6 +127,7 @@ void HandleLeftButtonDown(HWND hwnd, WPARAM wParam, LPARAM lParam, POINT& startP
 	}
 }
 
+// 마우스 오른쪽 버튼 눌림 핸들러
 void HandleRightButtonDown(HWND hwnd, WPARAM wParam, LPARAM lParam, RECT& drawing_area, int& Shape, BOOL& isMouseRButtonPressed, POINT& startPointSaved, POINT& endPointSaved, POINT& endPoint, POINT& m_startPoint, RECT& Box, RECT& Circle) {
 	// 도형의 종류가 Circle인 경우
 	if (Shape == S_Circle) {

@@ -39,7 +39,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
-		// 창의 최소 및 최대 크기에 대한 정보 제어
+	// 창의 최소 및 최대 크기에 대한 정보 제어
 	case WM_GETMINMAXINFO:
 	{
 		SetMinMaxWindowSizes(hwnd, (MINMAXINFO*)lParam, 800, 480);
@@ -49,11 +49,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	// 키가 눌린 상태인 경우
 	case WM_KEYDOWN:
 	{
-		// 만약에 스페이스키가 눌린 상태라면
-		if (wParam == VK_SPACE) {
+		// 만약에 선택한 도형이 보노보노이고, 스페이스키가 눌린 상태라면
+		if (Shape == S_Bonobono && wParam == VK_SPACE) {
 			// 체크 변수의 값을 TRUE로 설정
 			isSpaceButtonPressed = TRUE;
-
 			// WM_PAINT 메시지 호출
 			InvalidateRect(hwnd, &drawing_area, TRUE);
 		}
@@ -67,7 +66,6 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		if (wParam == VK_SPACE) {
 			// 체크 변수의 값을 FALSE으로 설정
 			isSpaceButtonPressed = FALSE;
-
 			// WM_PAINT 메시지 호출
 			InvalidateRect(hwnd, &drawing_area, TRUE);
 		}
@@ -82,7 +80,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		// 버튼의 아이디에 따라 처리
 		switch (wmId)
 		{
-			// Box 버튼이라면
+		// Box 버튼이라면
 		case 1:
 		{
 			Shape = S_Box;								// 도형의 종류를 Box로 설정
@@ -127,6 +125,8 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			Shape = S_Cube;								// 도형의 종류를 Cube로 설정
 			SetFocus(hwnd);								// 포커스를 윈도우 핸들러쪽으로 이동(버튼 포커스 해제)
+			startPoint = { 0 };							// startPoint의 좌표값을 0으로 초기화
+			endPoint = { 0 };							// endPoint의 좌표값을 0으로 초기화
 			InvalidateRect(hwnd, &drawing_area, TRUE);	// 드로잉 영역을 초기화
 			break;
 		}
@@ -200,7 +200,12 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 
 		// 도형의 종류가 Ryan이라면
 		if (Shape == S_Ryan) {
-			DrawRyan(hwnd, hdc, startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+			DrawRyan(hwnd, hdc, startPoint, endPoint);
+		}
+
+		// 도형의 종류가 Ryan이라면
+		if (Shape == S_Cube) {
+			DrawCube(hwnd, hdc, startPoint, endPoint);
 		}
 
 		EndPaint(hwnd, &ps);
@@ -235,9 +240,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		return DefWindowProc(hwnd, uMsg, wParam, lParam);
 	}
 	break;
-
 	}
-
 	return S_OK;
 }
 #ifdef UNICODE
@@ -319,5 +322,4 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// 종료 메시지 보내기
 	return (int)msg.wParam;
-
 }
